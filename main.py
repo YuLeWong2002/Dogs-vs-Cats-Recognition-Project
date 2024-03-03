@@ -1,16 +1,29 @@
-# This is a sample Python script.
+import warnings
+from keras.models import load_model
+from model import train_model, predict_image
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+warnings.filterwarnings('ignore')
 
+while True:
+    print("Select the following options: ")
+    print("1. Train model")
+    print("2. Test an image")
+    print("3. Exit the program")
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+    selection = input("Enter your choice: ")
 
+    if selection == "1":
+        train_model()
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('Dog Cat')
+    elif selection == "2":
+        model_path = "trained_model.h5"
+        model = load_model(model_path)
+        predict_image(model)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    elif selection == "3":
+        print("Exited")
+        break
+
+    else:
+        print("Invalid choice, pls enter your choice again(1, 2, 3)")
+
