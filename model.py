@@ -42,13 +42,20 @@ def create_df(input_path, label):
 
 
 def check_img(df):
-    l = []
+    print("Running, pls wait for a while......")
+    valid_images = []
+
     for i, image in enumerate(df['images']):
         try:
             img = PIL.Image.open(image)
+            valid_images.append(image)
         except Exception as e:
-            l.append(image)
             print(f"Error opening image {i}: {e}")
+
+    # Create a new DataFrame with only valid images
+    valid_df = df[df['images'].isin(valid_images)].copy()
+
+    return valid_df
 
 
 def prepare_data(df):
@@ -159,6 +166,7 @@ def predict_image(model):
 def train_model():
     input_path, label = read_data()
     df = create_df(input_path, label)
-    train_iterator, val_iterator = prepare_data(df)
+    valid_df = check_img(df)
+    train_iterator, val_iterator = prepare_data(valid_df)
     model = setup_model()
     print_graph(model, train_iterator, val_iterator)
